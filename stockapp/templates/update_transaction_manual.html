@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class='content-section'>
+    <form method="POST" action="" enctype="multipart/form-data">
+        <fieldset class="form-group">
+            <legend class="border-bottom mb-4">Add Transactions</legend>
+            <div class="form-group">
+                <label for="ticker">Ticker:</label>
+                <input type="text" class="form-control" name="ticker" id="ticker" placeholder="GOOG">
+            </div>
+            <div class="form-group">
+                <label for="txn_date">Transaction Date:</label>
+                <input type="date" class="form-control" name="txn_date" id="txn_date">
+            </div>
+            <div class="form-group">
+                <label for="txn_type">Transaction Type:</label>
+                <select class="custom-select my-1 mr-sm-2" id="txn_type" name="txn_type">
+                    <option value="BUY" selected>Buy</option>
+                    <option value="SELL">Sell</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="stock_price">Price per Stock:</label>
+                <div class="input-group">
+                    <div class="input-group-prepend">
+                        <span class="input-group-text" id="inputGroupPrepend">$</span>
+                    </div>
+                    <input type="text" class="form-control" name="stock_price" id="stock_price" placeholder="1500.91"
+                        aria-describedby="inputGroupPrepend" required step="any">
+                </div>
+            </div>
+            <div class="form-group">
+                <label for="qty">Quantity:</label>
+                <input type="text" class="form-control" name="qty" id="qty" placeholder="10.1">
+            </div>
+            <input type="submit" value="Add Transactions" class="btn btn-outline-secondary">
+        </fieldset>
+    </form>
+</div>
+{% endblock content %}

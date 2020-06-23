@@ -1,0 +1,14 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class='content-section'>
+    <form method="POST" action="" enctype="multipart/form-data">
+        <fieldset class="form-group">
+                <legend class="border-bottom mb-4">Update Transactions</legend>
+                <label for="file">Select a file (M1 finance format):</label>
+                <input type="file" class="form-control-file" id="file" name="file">
+                <br>
+                <input type="submit" value="Update Transactions" class="btn btn-outline-secondary">
+        </fieldset>
+    </form>
+</div>
+{% endblock content %}

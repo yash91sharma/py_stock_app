@@ -1,0 +1,65 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class='content-section'>
+        <form method="POST" action="">
+                <fieldset class="form-group">
+                        <legend class="border-bottom mb-4">Filter Stocks</legend>
+                        <label>Select Sectors:</label>
+                        <div class="form-group">
+                                <div class="form-check">
+                                        {% for sector in sector_list %}
+                                        <label>
+                                                <input type="checkbox" value="{{ sector }}" name="checkbox_sector">
+                                                {{ sector }}
+                                        </label>
+                                        {% endfor %}
+                                </div>
+                                <input type="checkbox" id="sector-selectall">
+                                <label>Select All Sectors</label>
+                                <script>
+                                        document.getElementById('sector-selectall').onclick = function () {
+                                                var checkboxes = document.getElementsByName('checkbox_sector');
+                                                for (var checkbox of checkboxes) {
+                                                        checkbox.checked = this.checked;
+                                                }
+                                        }
+                                </script>
+                        </div>
+                        <label>Select Stocks:</label>
+                        <div class="form-group">
+                                <div class="form-check">
+                                        {% for stock in stock_list %}
+                                        <label>
+                                                <input type="checkbox" value="{{ stock }}" name="checkbox_stock">
+                                                {{ stock }}
+                                        </label>
+                                        {% endfor %}
+                                </div>
+                                <input type="checkbox" id="stock_selectall">
+                                <label>Select All Stocks</label>
+                                <script>
+                                        document.getElementById('stock_selectall').onclick = function () {
+                                                var checkboxes = document.getElementsByName('checkbox_stock');
+                                                for (var checkbox of checkboxes) {
+                                                        checkbox.checked = this.checked;
+                                                }
+                                        }
+                                </script>
+                        </div>
+                        <label>Select Timeframe:</label>
+                        <div class="form-group">
+                                <select class="custom-select my-1 mr-sm-2" id="timeframe" name="timeframe">
+                                        <option value="5y">5 Year</option>
+                                        <option value="3y">3 Year</option>
+                                        <option value="1y" selected>1 Year</option>
+                                        <option value="1q">1 Quarter</option>
+                                        <option value="1m">1 Month</option>
+                                        <option value="1w">7 Day</option>
+                                        <option value="1d">1 Day</option>
+                                </select>
+                        </div>
+                        <input type="submit" class="btn btn-outline-secondary">
+                </fieldset>
+        </form>
+</div>
+{% endblock content %}

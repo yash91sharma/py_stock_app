@@ -1,0 +1,79 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <h6><a class="mr-2">Total dividends earned: ${{ "%.2f"|format(dividends_earned) }} ({{ "%.2f"|format(overall_dividend_yield) }}% yield)</a></h6>
+        <h6><a style="color:#999999;">Yearly dividend expected by value: <span class="badge badge-primary">${{ "%.2f"|format(future_dividend_by_value) }}</span>, 
+                by dividend yield: <span class="badge badge-primary">${{ "%.2f"|format(future_dividend_by_yield) }}</span></a></h6>
+        <br>
+        <h6><a class="mr-2">TTM Dividend yield by sector:</a></h6>
+        <div>
+                <canvas id="yieldBySector"></canvas>
+        </div>
+        <br>
+        <h6><a class="mr-2">TTM Dividend yield by stock:</a></h6>
+        <div>
+                <canvas id="yieldByStock"></canvas>
+        </div>
+
+        <script type="text/javascript">
+                new Chart(document.getElementById("yieldBySector"), {
+    type: 'bar',
+    data: {
+      labels: {{ sector_list|safe }},
+      datasets: [
+        {
+          label: "TTM Dividend Yield",
+          backgroundColor: '#4682B4',
+          data: {{ sector_dividend_yield|safe }}
+        }
+      ]
+    },
+    options: {
+      legend: { display: false },
+      scales: {yAxes: [{
+            ticks: {beginAtZero: true,callback: function (value, index, values) { return value + '%'; },fontSize: 8}}],
+            xAxes: [{ticks: {autoSkip: true,maxTicksLimit: 20,fontSize: 8}}]},
+      tooltips: {
+                          mode: 'index',
+                                  intersect: false
+                  },
+      hover: {
+              mode: 'index',
+                      intersect: false
+      }
+    }
+});
+        </script>
+
+  <script type="text/javascript">
+    new Chart(document.getElementById("yieldByStock"), {
+  type: 'bar',
+  data: {
+  labels: {{ stock_list|safe }},
+  datasets: [
+  {
+  label: "TTM Dividend Yield",
+  backgroundColor: '#6495ED',
+  data: {{ stock_dividend_yield|safe }}
+  }
+  ]
+  },
+  options: {
+  legend: { display: false },
+  scales: {yAxes: [{
+  ticks: {beginAtZero: true,callback: function (value, index, values) { return value + '%'; },fontSize: 8}}],
+  xAxes: [{ticks: {fontSize: 8}}]},
+  tooltips: {
+              mode: 'index',
+                      intersect: false
+      },
+  hover: {
+  mode: 'index',
+          intersect: false
+  }
+  }
+  });
+  </script>
+</div>
+{% endblock content %}

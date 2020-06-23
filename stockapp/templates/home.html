@@ -1,0 +1,12 @@
+{% extends "layout.html" %}
+{% block content %}
+    <article class="media content-section">
+        <div class="media-body">
+          <div class="article-metadata">
+            <a class="mr-2">Investment summary</a>
+          </div>
+          <h3><a class="article-title">Overall returns: {{ "%.2f"|format(total_returns) }}%</a></h3>
+          <p class="article-content">Invested in {{ num_stocks }} stocks.</p>
+        </div>
+      </article>
+{% endblock content %}

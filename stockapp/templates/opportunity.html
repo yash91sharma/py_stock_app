@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+        <h6><a class="mr-2">Investment opportunity based on price difference:</a></h6>
+        <div>
+                <canvas id="priceDiffChart"></canvas>
+        </div>
+
+        <script type="text/javascript">
+                new Chart(document.getElementById("priceDiffChart"), {
+                        type: 'bar',
+                        data: {
+                                labels: {{ stock_label| safe }},
+                        datasets: [
+                        {
+                                label: "Price Difference ($)",
+                                backgroundColor: {{ stock_color| safe }},
+                        data: {{ stock_price_diff| safe }}
+                        }
+                ]
+                },
+                        options: { legend: { display: false }, },
+                        tooltips: { mode: 'index', intersect: false },
+                        hover: { mode: 'index', intersect: false },
+                        elements: { point: { radius: 0.1 } },
+                        scales: {
+                                yAxes: [{
+                                        ticks: {
+                                                beginAtZero: true,
+                                                callback: function (value, index, values) { return '$' + value; },
+                                                fontSize: 8
+                                        }
+                                }],
+                        xAxes: [{ ticks: { autoSkip: true, fontSize: 8 } }]
+                }
+                });
+        </script>
+</div>
+{% endblock content %}

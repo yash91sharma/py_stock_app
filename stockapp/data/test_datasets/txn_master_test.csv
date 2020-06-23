@@ -1,0 +1,6 @@
+txn_date,ticker,qty,trade_type,unit_price,source
+2018-02-01,GOOGL,1,BUY,1175.99,manual
+2020-02-03,V,1,BUY,200.03,manual
+2020-02-04,TSLA,0.53736,BUY,893.2373,m1
+2020-02-04,JPM,3.31077,BUY,135.92,m1
+2020-02-04,MSFT,2.69481,BUY,178.1202,m1

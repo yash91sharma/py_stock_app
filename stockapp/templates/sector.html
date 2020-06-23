@@ -1,0 +1,178 @@
+{% extends "layout.html" %}
+{% block content %}
+<div class="content-section" style="overflow:hidden;">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <div>
+        <h6><a class="mr-2">Portfolio split by Sector/Stock:</a></h6>
+        <div style="justify-content: space-between;">
+            <canvas id="sectorChart" style="max-width: 300px; float:left; margin-right: 50px;"></canvas>
+            <canvas id="sectorGrowthChart" style="max-width: 350px; float:left;"></canvas>
+        </div>
+    </div>
+
+    <div style="clear:both;">
+        <br>
+        <h6><a class="mr-2">Value over time:</a></h6>
+        <div>
+            <canvas id="growthBySector"></canvas>
+        </div>
+    </div>
+
+    <div>
+        <div>
+            <canvas id="returnsBySector"></canvas>
+        </div>
+    </div>
+
+
+    <script type="text/javascript">
+        var ctx = document.getElementById('sectorChart').getContext('2d');
+        var sectorChart = new Chart(ctx, {
+            type: 'doughnut',
+            data: { labels: {{ chart_sector_label| safe }},
+        datasets: [{
+            label: 'Portfolio Value',
+            data: {{ chart_sector_value| safe }},
+            backgroundColor: {{ color_pallet|safe }},
+            // 'rgba(51, 102, 204, 0.3)',
+            borderWidth: 2}
+        ]},
+        options: {
+            responsive: true,
+                tooltips: { mode: 'index', intersect: false },
+            legend: { display: false,},
+            tooltips: {
+                callbacks: {
+                    title: function(tooltipItem, data) { return data['labels'][tooltipItem[0]['index']]; },
+                    label: function(tooltipItem, data) {
+                        var dataset = data.datasets[tooltipItem.datasetIndex];
+                        var total = dataset.data.reduce(function (previousValue, currentValue, currentIndex, array) {
+                            return previousValue + currentValue;
+                        });
+                        var currentValue = dataset.data[tooltipItem.index];
+                        var percentage = Math.floor(((currentValue / total) * 100) + 0.5);
+                        return "$" + currentValue + " (" + percentage + "%)";
+                    }
+                }
+            }
+        }});
+    </script>
+    <script type="text/javascript">
+        var ctx = document.getElementById('sectorGrowthChart').getContext('2d');
+        var sectorGrowthChart = new Chart(ctx, {
+            type: 'radar',
+            data: {
+                labels: {{ chart_sector_label| safe }},
+        datasets: [{
+            label: "% Growth",
+            fill: true,
+            backgroundColor: "rgba(60, 179, 113,0.2)",
+            borderColor: "rgba(60, 179, 113,1)",
+            pointBorderColor: "#fff",
+            pointBackgroundColor: "rgba(60, 179, 113,1)",
+            data: {{ chart_sector_returns| safe}}
+        },
+        {
+            label: "% of Portfolio",
+            fill: true,
+            backgroundColor: "rgba(51, 102, 204, 0.2)",
+            borderColor: "rgba(51, 102, 204, 1)",
+            pointBorderColor: "#fff",
+            pointBackgroundColor: "rgba(51, 102, 204, 1)",
+            data: {{ chart_sector_invest_perc| safe}}
+        }
+        ]
+                            },
+        options: {
+            responsive: true,
+                tooltips: {
+                mode: 'index',
+                    intersect: false
+            },
+            legend: {
+                display: true,
+                    position: 'bottom'
+            },
+            tooltips: {
+
+            }}});
+    </script>
+    <script>
+        new Chart(document.getElementById("growthBySector"), {
+            type: 'line',
+            data: {labels: {{ chart2_sector_label| safe}},
+            datasets: [
+            {% for item_data , item_name, item_color in chart2_sector_value_data %}
+                {data: {{ item_data|safe }},
+                label: "{{ item_name|safe }}",
+                borderColor: "{{ item_color|safe }}",
+                fill: false,
+                borderWidth: 2,
+                lineTension: 0},
+            {% endfor %}   
+            ]},
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        callback: function (value, index, values) { return '$' + value; },
+                        fontSize: 8
+                    }
+                }],
+                    xAxes: [{
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 20,
+                            fontSize: 8
+                        }
+                    }]
+            },
+            elements: {point: { radius: 0.1 }},
+            tooltips: {mode: 'index',intersect: false},
+            hover: {mode: 'index',intersect: false},
+            legend: {display: true, position:'bottom'}
+        }
+});
+    </script>
+
+    <script>
+        new Chart(document.getElementById("returnsBySector"), {
+            type: 'line',
+            data: {labels: {{ chart2_sector_label| safe}},
+            datasets: [
+            {% for item_data , item_name, item_color in chart2_sector_return_data %}
+                {data: {{ item_data|safe }},
+                label: "{{ item_name|safe }}",
+                borderColor: "{{ item_color|safe }}",
+                fill: false,
+                borderWidth: 2,
+                lineTension: 0},
+            {% endfor %}   
+            ]},
+        options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true,
+                        callback: function (value, index, values) { return value + '%'; },
+                        fontSize: 8
+                    }
+                }],
+                    xAxes: [{
+                        ticks: {
+                            autoSkip: true,
+                            maxTicksLimit: 20,
+                            fontSize: 8
+                        }
+                    }]
+            },
+            elements: {point: { radius: 0.1 }},
+            tooltips: {mode: 'index',intersect: false},
+            hover: {mode: 'index',intersect: false},
+            legend: {display: false}
+        }
+    });
+    </script>
+</div>
+{% endblock content %}
